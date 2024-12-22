@@ -47,7 +47,7 @@ export const Login = () => {
   
   // 4
   return (
-    <div className="container">
+    <div className="container text-light">
       <h1 className="text-primary">Login</h1>
        <form onSubmit={handleSubmit} className="text-start">
         <div className="mb-3">

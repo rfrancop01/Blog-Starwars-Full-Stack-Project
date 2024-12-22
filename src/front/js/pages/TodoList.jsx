@@ -20,7 +20,7 @@ export const TodoList = () => {
   }
 
   return (
-    <div className="container my-5">
+    <div className="container my-5 text-light">
       <h1 className="text-success">Todo List</h1>
       <form onSubmit={handleSubmit}>
         <div className="text-start mb-3">

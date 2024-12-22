@@ -1,47 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 
 
 export const Contacts = () => {
-    const baseURL = "https://playground.4geeks.com/contact/agendas";
-    const slug = "Ricardo";
 
+    const navigate = useNavigate()
+    const {store, actions} = useContext(Context)
 
-
-    const [contacts, setContacts] = useState([]);
-
-    const getContacts = async () => {
-        const uri = `${baseURL}/${slug}`;
-        const options = {
-            method: "GET"
-        }
-        const response = await fetch(uri, options);
-        if (!response.ok) {
-            console.log("error:", response.status, response.statusText);
-        }
-        const data = await response.json();
-        setContacts(data.contacts);
+    const handleDelete = async (contactId) => {
+        actions.deleteContact(contactId)
     }
 
-    const deleteContact = async (contactId) => {
-        console.log(contactId);
-
-        const uri = `${baseURL}/${slug}/contacts/${contactId}`;
-        const options = {
-            method: "DELETE"
-        }
-        const response = await fetch(uri, options);
-        if (!response.ok) {
-            console.log("error", response.status, response.statusText);
-            return
-        }
-        getContacts(contacts);
+    const handleEdit = async (contact) => {
+        actions.setCurrentContact(contact)
+        navigate("/edit-contact")
     }
-
-    useEffect(() => {
-        getContacts()
-    }, [])
 
     return (
 
@@ -57,7 +32,7 @@ export const Contacts = () => {
                 </div>
                 <div className="container ">
                     <ul className="list-group rounded my-3">
-                        {contacts.map((item) =>
+                        {store.contacts.map((item) =>
                             <li key={item.id}
                                 className="list-group-item d-flex ">
                                 <div className="p-2 flex-fill">
@@ -70,11 +45,11 @@ export const Contacts = () => {
                                     <p className="card-text mb-1">{item.address}</p>
                                 </div>
                                 <div className="d-flex align-item-end p-2 flex-fill" style={{height:"60px"}}>
-                                    <button type="button" className="btn btn-secondary me-4">
+                                    <button onClick={() => handleEdit(item)} type="button" className="btn btn-secondary me-4">
                                     <i className="fas fa-edit "></i>
                                     </button>
-                                    <button type="button" className="btn btn-danger" >
-                                    <i onClick={() => deleteContact(item.id)} className="fas fa-trash-alt"></i>
+                                    <button onClick={() => handleDelete(item.id)} type="button" className="btn btn-danger" >
+                                    <i className="fas fa-trash-alt"></i>
                                     </button>
                                 </div>
                             </li>

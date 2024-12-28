@@ -11,11 +11,12 @@ import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import { Home } from "./pages/Home.jsx";
 import { Error404 } from "./pages/Error404.jsx";
-import { Login } from "./pages/Login.jsx";
-import { TodoList } from "./pages/TodoList.jsx";
 import { Contacts } from "./pages/Contacts.jsx";
 import { AddContact } from "./pages/AddContact.jsx";
 import { EditContact } from "./pages/EditContact.jsx";
+import { Characters } from "./pages/Characters.jsx";
+import { Planets } from "./pages/Planets.jsx";
+import { Srtarships } from "./pages/Starships.jsx";
 
 
 //create your first component
@@ -32,14 +33,15 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Home />} path="/" />
-                        <Route element={<Login/>} path="/login" />
-                        <Route element={<TodoList/>} path="/todo-list" />
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<Error404/>} path="*" />
                         <Route element={<Contacts/>} path="/contacts" />
                         <Route element={<AddContact/>} path= "/add-contact" />
                         <Route element={<EditContact/>} path= "/edit-contact" />
+                        <Route element={<Characters/>} path= "/characters" />
+                        <Route element={<Planets/>} path= "/planets" />
+                        <Route element={<Srtarships/>} path= "/starships" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

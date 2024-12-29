@@ -32,8 +32,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("error:", response.status, response.statusText);
 				}
 				const data = await response.json();
-				setStore({characters: data.characters});
-				localStorage.setItem('characters', JSON.stringify(data.characters))
+				setStore({characters: data.results});
+				localStorage.setItem('characters', JSON.stringify(data.results))
 			},
 
 			getPlanets: async () => {
@@ -50,8 +50,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("error:", response.status, response.statusText);
 				}
 				const data = await response.json();
-				setStore({planets: data.planets});
-				localStorage.setItem('planets', JSON.stringify(data.planets))
+				setStore({planets: data.results});
+				localStorage.setItem('planets', JSON.stringify(data.results))
 			},
 
 			getStarships: async () => {

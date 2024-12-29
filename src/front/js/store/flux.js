@@ -8,11 +8,70 @@ const getState = ({ getStore, getActions, setStore }) => {
 			slug: "Ricardo",
 			contacts: [],
 			currentContact: {},
+			baseUrlStarwars: "https://www.swapi.tech/api",
+			characters: [],
+			planets: [],
+			starships: [],
 
-			
+
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
+			
+			getCharacters: async () => {
+				if (localStorage.getItem('characters')) {
+					setStore( { characters: JSON.parse(localStorage.getItem('characters'))} );		
+					return
+				}
+				const uri = `${getStore().baseUrlStarwars}/people`;
+				const options = {
+					method: "GET"
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText);
+				}
+				const data = await response.json();
+				setStore({characters: data.characters});
+				localStorage.setItem('characters', JSON.stringify(data.characters))
+			},
+
+			getPlanets: async () => {
+				if (localStorage.getItem('planets')) {
+					setStore( { planets: JSON.parse(localStorage.getItem('planets'))} );
+					return
+				}
+				const uri = `${getStore().baseUrlStarwars}/planets`;
+				const options = {
+					method: "GET"
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText);
+				}
+				const data = await response.json();
+				setStore({planets: data.planets});
+				localStorage.setItem('planets', JSON.stringify(data.planets))
+			},
+
+			getStarships: async () => {
+				if (localStorage.getItem('starships')) {
+					setStore( { starships: JSON.parse(localStorage.getItem('starships'))} );
+					return
+				}
+				const uri = `${getStore().baseUrlStarwars}/starships`;
+				const options = {
+					method: "GET"
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText);
+				}
+				const data = await response.json();
+				setStore({starships: data.results});
+				localStorage.setItem('starships', JSON.stringify(data.results))
+			},
+			
 			setCurrentContact: (contact) => { setStore({ currentContact: contact}) },
 
 			createUser: async () =>{

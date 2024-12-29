@@ -26,16 +26,16 @@ export const Navbar = () => {
                             <Link className="nav-link link-secondary" to="/contacts">Contacts</Link>
                         </li>
                         <li className="nav-item">
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <div className="dropdown">
+                                <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Favorites
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+                                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
                                         0
                                     </span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end">
+                                <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end">
                                     <li>
-                                        <span class="dropdown-item">No favorites selected</span>
+                                        <span className="dropdown-item">No favorites selected</span>
                                     </li>
                                 </ul>
                             </div>

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
-
+import { Link } from "react-router-dom";
 
 export const Starships = () => {
 
@@ -13,17 +13,19 @@ export const Starships = () => {
 
         <div className="container bg-dark mb-3">
             <h1 className="text-light text-center pt-4">Starships</h1>
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-2">
+            <div className="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-2">
                 {store.starships.map((item) =>
                     <div key={item.uid} className="col">
-                        <div className="card mx-2 my-2">
+                        <div className="card mx-2 my-2 border border-0">
                             <img alt="" src={`https://starwars-visualguide.com/assets/img/starships/${item.uid}.jpg`} />
                             <div className="card-body">
                                 <h5 className="card-title">
                                     {item.name}
                                 </h5>
                                 <div className="d-flex justify-content-between">
-                                    <a className="btn btn-secondary" href="/character/1">Details</a>
+                                    <Link to={`/starships/${item.uid}`}>
+                                    <a className="btn btn-secondary">Details</a>
+                                    </Link>
                                     <span className="btn btn-outline-warning">
                                         <i className="far fa-heart fa-lg">
                                         </i>

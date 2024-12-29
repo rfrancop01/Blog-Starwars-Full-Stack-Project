@@ -12,11 +12,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 			characters: [],
 			planets: [],
 			starships: [],
+			currentCharacter: {},
+			currentPlanet: {},
+			currentStarship: {},
 
 
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
+			setCurrentContact: (contact) => { setStore({ currentContact: contact}) },
+			setCurrentCharacter: (value) => { setStore({ currentCharacter: value})},
+			setCurrentPlanet: (value) => { setStore({ currentPlanet: value})},
+			setCurrentStarship: (value) => { setStore({ currentStarship: value})},
 			
 			getCharacters: async () => {
 				if (localStorage.getItem('characters')) {
@@ -34,6 +41,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({characters: data.results});
 				localStorage.setItem('characters', JSON.stringify(data.results))
+			},
+
+			getCharacter: async (id) => {
+				const uri = `${getStore().baseUrlStarwars}/people/${id}`;
+				const options = {
+					method: "GET"
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText);
+				}
+				const data = await response.json();
+				setStore( {currentCharacter: data.result.properties})
 			},
 
 			getPlanets: async () => {
@@ -54,6 +74,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 				localStorage.setItem('planets', JSON.stringify(data.results))
 			},
 
+			getPlanet: async (id) => {
+				const uri = `${getStore().baseUrlStarwars}/planets/${id}`;
+				const options = {
+					method: "GET"
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText);
+				}
+				const data = await response.json();
+				setStore( {currentPlanet: data.result.properties})
+			},
+
 			getStarships: async () => {
 				if (localStorage.getItem('starships')) {
 					setStore( { starships: JSON.parse(localStorage.getItem('starships'))} );
@@ -71,9 +104,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({starships: data.results});
 				localStorage.setItem('starships', JSON.stringify(data.results))
 			},
-			
-			setCurrentContact: (contact) => { setStore({ currentContact: contact}) },
 
+			getStarship: async (id) => {
+				const uri = `${getStore().baseUrlStarwars}/starships/${id}`;
+				const options = {
+					method: "GET"
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log("error:", response.status, response.statusText);
+				}
+				const data = await response.json();
+				setStore( {currentStarship: data.result.properties})
+			},
+			
+			
 			createUser: async () =>{
 				const uri = `${getStore().baseURLContacts}/Ricardo`
 				const options = {
@@ -84,9 +129,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('error:', response.status, response.statusText)
 					return  
 				}
-
+				
 			},
-
+			
 			getContacts: async () => {
 				const uri = `${getStore().baseURLContacts}/${getStore().slug}`;
 				const options = {
@@ -102,7 +147,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json();
 				setStore({contacts: data.contacts});
 			},
-
+			
 			deleteContact: async (contactId) => {		
 				const uri = `${getStore().baseURLContacts}/${getStore().slug}/contacts/${contactId}`;
 				const options = {

@@ -43,11 +43,11 @@ const Layout = () => {
                         <Route element={<AddContact/>} path= "/add-contact" />
                         <Route element={<EditContact/>} path= "/edit-contact" />
                         <Route element={<Characters/>} path= "/characters" />
+                        <Route element={<Character/>} path= "/characters/:uid" />
                         <Route element={<Planets/>} path= "/planets" />
                         <Route element={<Starships/>} path= "/starships" />
-                        <Route element={<Character/>} path= "/character" />
-                        <Route element={<Planet/>} path= "/planet" />
-                        <Route element={<Starship/>} path= "/starship" />
+                        <Route element={<Planet/>} path= "/planets/:uid" />
+                        <Route element={<Starship/>} path= "/starships/:uid" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

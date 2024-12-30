@@ -16,7 +16,7 @@ export const Navbar = () => {
         <nav className="navbar navbar-dark bg-dark mb-3">
             <div className="container-fluid d-flex justify-content-between mx-md-4 mt-4 mb-1">
                 <div>
-                    <Link className="navbar-brand " to="/"><img height="55" src={starWarsUrl} /></Link>
+                    <Link className="navbar-brand " to="/"><img height="40" src={starWarsUrl} /></Link>
                 </div>
                 <div>
                     <ul className="nav me-auto mb-2 mb-lg-0">

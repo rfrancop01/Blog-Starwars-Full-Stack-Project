@@ -8,6 +8,10 @@ export const Characters = () => {
 
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
+    const handleOnError = (event) => {
+        console.log(event.target.src);
+        event.target.src = "https://starwars-visualguide.com/assets/img/placeholder.jpg"
+    }
     const handlePage = (link) => {
         console.log(link);
         // ejecutar un action que tenga un fetch con el get del link y lo ponga todo en character
@@ -22,7 +26,11 @@ export const Characters = () => {
                 {store.characters.map((item) =>
                     <div key={item.uid} className="col">
                         <div className="card mx-2 my-2 border border-0">
-                            <img alt="" src={`https://starwars-visualguide.com/assets/img/characters/${item.uid}.jpg`} />
+                            <img 
+                            className="card-img-top"
+                            onError={handleOnError}
+                            alt="" 
+                            src={`https://starwars-visualguide.com/assets/img/characters/${item.uid}.jpg`} />
                             <div className="card-body">
                                 <h5 className="card-title">
                                     {item.name}
@@ -36,23 +44,23 @@ export const Characters = () => {
                     </div>
                 )}
             </div>
-            <nav aria-label="...">
+            {/* <nav aria-label="...">
                 <ul className="pagination">
                     <li className="page-item disabled">
                         <span className="page-link">Previous</span>
                     </li>
-                    {store.paginationCharacter.map((item, index) =>
+                     {store.paginationCharacter.map((item, index) =>
                         <li className="page-item">
                             <button 
                             onClick={() => handlePage(item.link)}
                             className="page-link" href="#">{index + 1}</button>
                         </li>
-                    )}
+                    )} 
                     <li className="page-item">
                         <a className="page-link" href="#">Next</a>
                     </li>
                 </ul>
-            </nav>
+            </nav> */}
         </div>
     )
 }

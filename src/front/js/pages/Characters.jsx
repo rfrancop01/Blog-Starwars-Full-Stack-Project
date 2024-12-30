@@ -8,6 +8,17 @@ export const Characters = () => {
 
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
+    const handleNextPage = () => {
+        if (store.currentPage < store.totalPages) {
+            actions.setPage(store.currentPage + 1);
+        }
+    };
+
+    const handlePrevPage = () => {
+        if (store.currentPage > 1) {
+            actions.setPage(store.currentPage - 1);
+        }
+    };
 
 
     return (
@@ -24,18 +35,34 @@ export const Characters = () => {
                                     {item.name}
                                 </h5>
                                 <div className="d-flex justify-content-between">
-                                    <Link to={`/characters/${item.uid}`}>
-                                    <a className="btn btn-secondary">Details</a>
-                                    </Link>
+                                    <Link to={`/characters/${item.uid}`} className="btn btn-secondary">Details</Link>
                                     <span className="btn btn-outline-warning">
-                                        <i className="far fa-heart fa-lg">
-                                        </i>
+                                        <i className="far fa-heart fa-lg"></i>
                                     </span>
                                 </div>
                             </div>
                         </div>
-                        </div>
+                    </div>
                 )}
+            </div>
+            <div className="d-flex justify-content-between mt-3">
+                <button
+                    className="btn btn-primary"
+                    onClick={handlePrevPage}
+                    disabled={store.currentPage === 1}
+                >
+                    Anterior
+                </button>
+                <span>
+                    Página {store.currentPage} de {store.totalPages}
+                </span>
+                <button
+                    className="btn btn-primary"
+                    onClick={handleNextPage}
+                    disabled={store.currentPage === store.totalPages}
+                >
+                    Siguiente
+                </button>
             </div>
         </div>
     )

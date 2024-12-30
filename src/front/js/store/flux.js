@@ -15,6 +15,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentCharacter: {},
 			currentPlanet: {},
 			currentStarship: {},
+            currentPage: 1, 
+            totalPages: 0, 
 
 
 		},
@@ -24,13 +26,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setCurrentCharacter: (value) => { setStore({ currentCharacter: value})},
 			setCurrentPlanet: (value) => { setStore({ currentPlanet: value})},
 			setCurrentStarship: (value) => { setStore({ currentStarship: value})},
+			setPage: (page) => {
+				const store = getStore();
+				if (page > 0 && page <= store.totalPages) {
+					setStore({ currentPage: page });
+					getActions().fetchCharacters(page); 
+				}
+			},
 			
 			getCharacters: async () => {
 				if (localStorage.getItem('characters')) {
 					setStore( { characters: JSON.parse(localStorage.getItem('characters'))} );		
 					return
 				}
-				const uri = `${getStore().baseUrlStarwars}/people`;
+				const uri = `${getStore().baseUrlStarwars}/people/?page=${page}`;
 				const options = {
 					method: "GET"
 				}
@@ -39,8 +48,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("error:", response.status, response.statusText);
 				}
 				const data = await response.json();
-				setStore({characters: data.results});
+				setStore({
+					characters: data.results,
+					currentPage: page,
+					totalPages: Math.ceil(data.count / 10 )
+				});
 				localStorage.setItem('characters', JSON.stringify(data.results))
+				console.log(data);
+				
 			},
 
 			getCharacter: async (id) => {

@@ -22,7 +22,7 @@ const injectContext = PassedComponent => {
 		);
 
 		useEffect(() => {
-			state.actions.getCharacters();
+			state.actions.getCharacters(state.store.currentPage);
 			state.actions.getStarships();
 			state.actions.getPlanets();
 			state.actions.getContacts();

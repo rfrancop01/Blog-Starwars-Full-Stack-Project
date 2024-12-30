@@ -30,7 +30,7 @@ const Layout = () => {
     if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
 
     return (
-        <div>
+        <div className= "d-flex flex-column min-vh-100">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
@@ -49,7 +49,7 @@ const Layout = () => {
                         <Route element={<Planet/>} path= "/planets/:uid" />
                         <Route element={<Starship/>} path= "/starships/:uid" />
                     </Routes>
-                    <Footer />
+                    <Footer  />
                 </ScrollToTop>
             </BrowserRouter>
         </div>

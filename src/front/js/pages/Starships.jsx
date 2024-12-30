@@ -2,12 +2,16 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import { ButtonLike } from "../component/ButtonLike.jsx";
 
 export const Starships = () => {
 
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
-
+    const handleOnError = (event) => {
+        console.log(event.target.src);
+        event.target.src = "https://starwars-visualguide.com/assets/img/big-placeholder.jpg"
+    }
 
     return (
 
@@ -17,19 +21,16 @@ export const Starships = () => {
                 {store.starships.map((item) =>
                     <div key={item.uid} className="col">
                         <div className="card mx-2 my-2 border border-0">
-                            <img alt="" src={`https://starwars-visualguide.com/assets/img/starships/${item.uid}.jpg`} />
+                            <img 
+                            onError={handleOnError}
+                            alt="" src={`https://starwars-visualguide.com/assets/img/starships/${item.uid}.jpg`} />
                             <div className="card-body">
                                 <h5 className="card-title">
                                     {item.name}
                                 </h5>
                                 <div className="d-flex justify-content-between">
-                                    <Link to={`/starships/${item.uid}`}>
-                                    <a className="btn btn-secondary">Details</a>
-                                    </Link>
-                                    <span className="btn btn-outline-warning">
-                                        <i className="far fa-heart fa-lg">
-                                        </i>
-                                    </span>
+                                    <Link to={`/starships/${item.uid}`} className="btn btn-secondary">Details</Link>
+                                    <ButtonLike item={item} type="starship" />
                                 </div>
                             </div>
                         </div>

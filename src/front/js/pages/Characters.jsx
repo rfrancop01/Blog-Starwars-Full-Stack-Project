@@ -2,23 +2,16 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-
+import { ButtonLike } from "../component/ButtonLike.jsx";
 
 export const Characters = () => {
 
     const navigate = useNavigate();
     const { store, actions } = useContext(Context);
-    const handleNextPage = () => {
-        if (store.currentPage < store.totalPages) {
-            actions.setPage(store.currentPage + 1);
-        }
-    };
-
-    const handlePrevPage = () => {
-        if (store.currentPage > 1) {
-            actions.setPage(store.currentPage - 1);
-        }
-    };
+    const handlePage = (link) => {
+        console.log(link);
+        // ejecutar un action que tenga un fetch con el get del link y lo ponga todo en character
+    }
 
 
     return (
@@ -36,34 +29,30 @@ export const Characters = () => {
                                 </h5>
                                 <div className="d-flex justify-content-between">
                                     <Link to={`/characters/${item.uid}`} className="btn btn-secondary">Details</Link>
-                                    <span className="btn btn-outline-warning">
-                                        <i className="far fa-heart fa-lg"></i>
-                                    </span>
+                                    <ButtonLike item={item} type="character" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 )}
             </div>
-            <div className="d-flex justify-content-between mt-3">
-                <button
-                    className="btn btn-primary"
-                    onClick={handlePrevPage}
-                    disabled={store.currentPage === 1}
-                >
-                    Anterior
-                </button>
-                <span>
-                    Página {store.currentPage} de {store.totalPages}
-                </span>
-                <button
-                    className="btn btn-primary"
-                    onClick={handleNextPage}
-                    disabled={store.currentPage === store.totalPages}
-                >
-                    Siguiente
-                </button>
-            </div>
+            <nav aria-label="...">
+                <ul className="pagination">
+                    <li className="page-item disabled">
+                        <span className="page-link">Previous</span>
+                    </li>
+                    {store.paginationCharacter.map((item, index) =>
+                        <li className="page-item">
+                            <button 
+                            onClick={() => handlePage(item.link)}
+                            className="page-link" href="#">{index + 1}</button>
+                        </li>
+                    )}
+                    <li className="page-item">
+                        <a className="page-link" href="#">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     )
 }

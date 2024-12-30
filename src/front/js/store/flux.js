@@ -15,8 +15,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentCharacter: {},
 			currentPlanet: {},
 			currentStarship: {},
-            currentPage: 1, 
-            totalPages: 0, 
+			favorites: [],
+			paginationCharacter: [],
 
 
 		},
@@ -26,20 +26,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 			setCurrentCharacter: (value) => { setStore({ currentCharacter: value})},
 			setCurrentPlanet: (value) => { setStore({ currentPlanet: value})},
 			setCurrentStarship: (value) => { setStore({ currentStarship: value})},
-			setPage: (page) => {
-				const store = getStore();
-				if (page > 0 && page <= store.totalPages) {
-					setStore({ currentPage: page });
-					getActions().fetchCharacters(page); 
-				}
-			},
 			
 			getCharacters: async () => {
 				if (localStorage.getItem('characters')) {
-					setStore( { characters: JSON.parse(localStorage.getItem('characters'))} );		
+					setStore( { 
+						characters: JSON.parse(localStorage.getItem('characters')),
+						paginationCharacter: JSON.parse(localStorage.getItem("paginationCharacter")),
+					} );		
 					return
 				}
-				const uri = `${getStore().baseUrlStarwars}/people/?page=${page}`;
+				const uri = `${getStore().baseUrlStarwars}/people`;
 				const options = {
 					method: "GET"
 				}
@@ -48,12 +44,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("error:", response.status, response.statusText);
 				}
 				const data = await response.json();
-				setStore({
+				const pagination = [];
+				for (let i = 1; i <= data.total_pages; i++) {
+					pagination.push({
+						link: `https://www.swapi.tech/api/people?page=${i}&limit=10`,
+						previous: i === 1 ? null : `https://www.swapi.tech/api/people?page=${i-1}&limit=10`,
+						next:  i === data.total_pages ? null : `https://www.swapi.tech/api/people?page=${i+1}&limit=10`,
+					})}
+
+				setStore( { 
 					characters: data.results,
-					currentPage: page,
-					totalPages: Math.ceil(data.count / 10 )
-				});
+					paginationCharacter: pagination,
+				} );		
 				localStorage.setItem('characters', JSON.stringify(data.results))
+				localStorage.setItem("paginationCharacter", pagination)
 				console.log(data);
 				
 			},
@@ -133,6 +137,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore( {currentStarship: data.result.properties})
 			},
 			
+			addFavorite: (item) => {
+				const store = getStore();  
+				const favoriteItem = {
+					uid: item.uid,
+					name: item.name,
+					type: item.type, 
+				};
+				setStore({
+					...store,
+					favorites: [...store.favorites, favoriteItem],
+				});
+			},
+			
+			removeFavorite: (name, type) => {
+				const store = getStore();  
+				setStore({
+					...store,
+					favorites: store.favorites.filter((fav) => fav.name != name),
+				});
+			},
 			
 			createUser: async () =>{
 				const uri = `${getStore().baseURLContacts}/Ricardo`

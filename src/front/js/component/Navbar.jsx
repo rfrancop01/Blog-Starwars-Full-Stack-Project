@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import starWarsUrl from "../../img/starwars-logo.png";
 import { Link } from "react-router-dom";
+import { Context } from "../store/appContext";
 
 export const Navbar = () => {
-    //Code JS
+
+    const { store, actions } = useContext(Context)
+
+    const handleRemoveFavorite = (name) => {
+        actions.removeFavorite(name);
+    };
+
     return (
 
         <nav className="navbar navbar-dark bg-dark mb-3">
@@ -30,13 +37,27 @@ export const Navbar = () => {
                                 <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Favorites
                                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
-                                        0
+                                        {store.favorites.length}
                                     </span>
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end">
-                                    <li>
-                                        <span className="dropdown-item">No favorites selected</span>
-                                    </li>
+                                    {store.favorites.length === 0 ? (
+                                        <li>
+                                            <span className="dropdown-item">No favorites selected</span>
+                                        </li>
+                                    ) : (
+                                        store.favorites.map((favorite) => (
+                                            <li key={`${favorite.uid}-${favorite.type}`} className="dropdown-item d-flex justify-content-between">
+                                                <span>{favorite.name} - {favorite.type}</span>
+                                                <button
+                                                    className="btn btn-danger btn-sm ms-4"
+                                                    onClick={() => handleRemoveFavorite(favorite.name)}
+                                                >
+                                                    <i className="fas fa-trash"></i>
+                                                </button>
+                                            </li>
+                                        ))
+                                    )}
                                 </ul>
                             </div>
                         </li>

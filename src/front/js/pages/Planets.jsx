@@ -2,12 +2,15 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
+import { ButtonLike } from "../component/ButtonLike.jsx";
 
 
 export const Planets = () => {
-   
+
     const navigate = useNavigate();
-    const {store, actions } = useContext(Context);
+    const { store, actions } = useContext(Context);
+
+
 
     return (
 
@@ -23,17 +26,12 @@ export const Planets = () => {
                                     {item.name}
                                 </h5>
                                 <div className="d-flex justify-content-between">
-                                    <Link to={`/planets/${item.uid}`}>
-                                    <a className="btn btn-secondary">Details</a>
-                                    </Link>
-                                    <span className="btn btn-outline-warning">
-                                        <i className="far fa-heart fa-lg">
-                                        </i>
-                                    </span>
+                                    <Link to={`/planets/${item.uid}`} className="btn btn-secondary">Details</Link>
+                                    <ButtonLike item={item} type="planet" />
                                 </div>
                             </div>
                         </div>
-                        </div>
+                    </div>
                 )}
             </div>
         </div>

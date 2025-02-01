@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from api.models import db, Users, Posts, Medias, Comments, Followers, Characters, Planets, CharacterFavorites, PlanetFavorites
-
+import requests
 
 api = Blueprint('api', __name__)
 CORS(api)  # Allow CORS requests to this API
@@ -26,6 +26,31 @@ def users():
         response_body['message'] = 'Listado de usuarios:'
         response_body['results'] = result
         return response_body, 200
+    
+
+@api.route('/users/<int:user_id>/posts', methods=['GET'])
+def users_posts(user_id):
+    response_body = {}
+    rows = db.session.execute(db.select(Posts).where(Posts.user_id == user_id)).scalars()
+    response_body['results'] = [ row.serialize() for row in rows ]
+    response_body['message'] = 'Todos los posts de un usuario'
+    return response_body, 200
+
+@api.route('/posts/<int:post_id>/comments', methods=['GET'])
+def posts_comments(post_id):
+    response_body = {}
+    rows = db.session.execute(db.select(Comments).where(Comments.post_id == post_id)).scalars()
+    response_body['results'] = [ row.serialize() for row in rows ]
+    response_body['message'] = 'Todos los comentarios de una publicación'
+    return response_body, 200
+
+@api.route('/users/<int:user_id>/comments', methods=['GET'])
+def user_comments(user_id):
+    response_body = {}
+    rows = db.session.execute(db.select(Comments).where(Comments.user_id == user_id)).scalars()
+    response_body['results'] = [ row.serialize() for row in rows ]
+    response_body['message'] = 'Todos los comentarios de un usuario'
+    return response_body, 200
 
 
 @api.route('/posts', methods=['GET', 'POST'])
@@ -240,6 +265,44 @@ def characters():
     if request.method == 'POST':
         pass
 
+@api.route('/swapi/characters', methods=['GET'])
+def characters_swapi():
+    response_body = {}
+    url = 'https://swapi.tech/api/people'
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        response_body['message'] = 'Listado de personajes importados de la SWAPI'
+        next = data.get('next')
+        while True:
+            results = data['results']
+            for result in results:
+                character_response = requests.get(result['url'])
+                if character_response.status_code == 200:
+                    character_data = character_response.json().get('result').get('properties')
+                    character = Characters(
+                        id = character_data.get('id'),
+                        name = character_data.get('name'),
+                        height = character_data.get('height'),
+                        mass = character_data.get('mass'),
+                        eye_color = character_data.get('eye_color'),
+                        hair_color = character_data.get('hair_color'),
+                        skin_color = character_data.get('skin_color'),
+                        birth_year = character_data.get('birth_year'),
+                        gender = character_data.get('gender'))
+                    db.session.add(character)
+                else:
+                    response_body['message'] = 'Error al importart personajes desde SWAPI'
+                    db.session.rollback()
+            if next is None:
+                    break
+            else:
+                next_response = requests.get(next)
+                data = next_response.json()
+                next = data.get('next')
+        db.session.commit()
+        return response_body, 200
+    return response_body, 400
 
 @api.route('/planets', methods=['GET'])
 def planets():
@@ -252,6 +315,45 @@ def planets():
     if request.method == 'POST':
         pass
 
+
+@api.route('/swapi/planets', methods=['GET'])
+def planets_swapi():
+    response_body = {}
+    url = 'https://swapi.tech/api/planets'
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        response_body['message'] = 'Listado de planetas importados de la SWAPI'
+        next = data.get('next')
+        while True:
+            results = data['results']
+            for result in results:
+                planet_response = requests.get(result['url'])
+                if planet_response.status_code == 200:
+                    planet_data = planet_response.json().get('result').get('properties')
+                    planet = Planets(
+                        id = planet_data.get('id'),
+                        name = planet_data.get('name'),
+                        diameter = planet_data.get('diameter'),
+                        rotation_period = planet_data.get('rotation_period'),
+                        orbital_period = planet_data.get('orbital_period'),
+                        gravity = planet_data.get('gravity'),
+                        population = planet_data.get('population'),
+                        climate = planet_data.get('climate'),
+                        terrain = planet_data.get('terrain'))
+                    db.session.add(planet)
+                else:
+                    response_body['message'] = 'Error al importar los planetas desde SWAPI'
+                    db.session.rollback()
+            if next is None:
+                break
+            else:
+                next_response = requests.get(next)
+                data = next_response.json()
+                next = data.get('next')
+        db.session.commit()
+        return response_body, 200
+    return response_body, 400
 
 @api.route('/character-favorites', methods=['GET', 'POST'])
 def character_favorites():
@@ -347,3 +449,6 @@ def planet_favorite(id):
         db.session.commit()
         response_body['message'] = f'Eliminado el registro con id: {id}'
         return response_body, 200
+
+
+

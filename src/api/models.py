@@ -133,7 +133,7 @@ class PlanetFavorites(db.Model):
 
 class Characters(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, unique=False, nullable=False)
+    name = db.Column(db.String, unique=True, nullable=False)
     height = db.Column(db.String, unique=False, nullable=False)
     mass = db.Column(db.String, unique=False, nullable=False)
     hair_color = db.Column(db.String, unique=False, nullable=False)
@@ -161,7 +161,7 @@ class Planets(db.Model):
     rotation_period = db.Column(db.String, unique=False, nullable=False)
     orbital_period = db.Column(db.String, unique=False, nullable=False)
     gravity = db.Column(db.String, unique=False, nullable=False)
-    population = db.Column(db.String, unique=False, nullable=False)
+    population = db.Column(db.String, unique=False, nullable=True)
     climate = db.Column(db.String, unique=False, nullable=False)
     terrain = db.Column(db.String, unique=False, nullable=False)
 

@@ -20,6 +20,10 @@ import { Starships } from "./pages/Starships.jsx";
 import { Character } from "./pages/Character.jsx";
 import { Planet } from "./pages/Planet.jsx";
 import { Starship } from "./pages/Starship.jsx";
+import { Login } from "./pages/Login.jsx";
+import { SignUp } from "./pages/SignUp.jsx";
+import { Dashboard } from "./pages/Dashboard.jsx";
+import { Alert } from "./component/Alert.jsx";
 
 
 //create your first component
@@ -34,6 +38,7 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
+                    {/* <Alert /> */}
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />
@@ -48,6 +53,9 @@ const Layout = () => {
                         <Route element={<Starships/>} path= "/starships" />
                         <Route element={<Planet/>} path= "/planets/:uid" />
                         <Route element={<Starship/>} path= "/starships/:uid" />
+                        <Route element={<Login/>} path= "/login" />
+                        <Route element={<SignUp/>} path= "/sign-up" />
+                        <Route element={<Dashboard/>} path= "/dashboard" />
                     </Routes>
                     <Footer  />
                 </ScrollToTop>

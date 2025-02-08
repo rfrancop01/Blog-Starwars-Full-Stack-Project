@@ -18,6 +18,7 @@ export const Contacts = () => {
         navigate("/edit-contact")
     }
 
+
     return (
 
         <div className="container-fluid bg-dark ">

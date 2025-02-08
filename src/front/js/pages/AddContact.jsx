@@ -21,6 +21,10 @@ export const AddContact = () => {
         navigate("/contacts");
     }
 
+    useEffect(() => {
+        actions.setAlert({alert: {visible: false}})
+        } , []) 
+
 
     return (
         <div className="container my-5 text-light">

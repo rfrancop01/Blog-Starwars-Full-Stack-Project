@@ -16,6 +16,8 @@ export const Navbar = () => {
         if (store.isLogged) {
             actions.setIsLogged(false);
             actions.setUser({});
+            localStorage.removeItem('token')
+            console.log('deslogeando');
             navigate('/')
         }else{
             navigate('/login')

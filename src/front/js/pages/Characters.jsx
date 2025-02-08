@@ -17,9 +17,6 @@ export const Characters = () => {
         // ejecutar un action que tenga un fetch con el get del link y lo ponga todo en character
     } */
 
-        useEffect(() => {
-            actions.setAlert({alert: {visible: false}})
-        } , []) 
  
     return (
 

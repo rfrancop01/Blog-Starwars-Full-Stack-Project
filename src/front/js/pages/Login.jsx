@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { Link, useNavigate } from "react-router-dom";
+import { Alert } from "../component/Alert.jsx";
 
 
 export const Login = () => {
@@ -21,11 +22,13 @@ export const Login = () => {
         await actions.login(dataToSend);
         if (store.isLogged){
             navigate("/dashboard");
+
         }
     }
 
     return (
         <div className="card w-100 m-auto" style={{maxWidth: 330, padding: '1rem'}}>
+            <Alert/>
             <form onSubmit={handleSignIn} className="container">
                 <h1 className="h3 mb-3 fw-normal text-center mt-5 ">Log in</h1>
                 <div className="form-floating mb-2">

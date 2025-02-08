@@ -288,7 +288,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				if (!response.ok) {
 					console.log('error:', response.status, response.statusText)
 					if(response.status == 401){
-						setStore({alert: {text: 'Email o contraseña no válido', background: 'warning', visible: true}})					
+						setStore({alert: {text: 'Email o contraseña no válido', background: 'danger', visible: true}})					
 					}
 					return
 				}

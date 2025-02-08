@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,9 +22,14 @@ export const Login = () => {
         await actions.login(dataToSend);
         if (store.isLogged){
             navigate("/dashboard");
-
         }
     }
+
+    useEffect(() => {
+        actions.setAlert({text:'', background:'primary', true:false});
+    }, [])
+
+
 
     return (
         <div className="card w-100 m-auto" style={{maxWidth: 330, padding: '1rem'}}>

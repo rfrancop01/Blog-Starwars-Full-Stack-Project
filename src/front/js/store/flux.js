@@ -17,21 +17,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentStarship: {},
 			favorites: [],
 			paginationCharacter: [],
-
+			isLogged: false,
+			user: {},
+			alert: {text:'', background: 'primary', visible: 'false'},
+			currentUser: {},
 
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
+			setIsLogged: (value) => { setStore({ isLogged: value }) },
 			setCurrentContact: (contact) => { setStore({ currentContact: contact}) },
 			setCurrentCharacter: (value) => { setStore({ currentCharacter: value})},
 			setCurrentPlanet: (value) => { setStore({ currentPlanet: value})},
 			setCurrentStarship: (value) => { setStore({ currentStarship: value})},
+			setCurrentCharacter: (value) => { setStore({ currentUser: value})},
+			setAlert: (newAlert) => setStore({alert: newAlert}),
+			setUser: (currentUser) => {setStore({user: currentUser})},
+			setCurrentUser: (item) => {setStore({ currentUser: item})},
 			
 			getCharacters: async () => {
 				if (localStorage.getItem('characters')) {
 					setStore( { 
 						characters: JSON.parse(localStorage.getItem('characters')),
-						paginationCharacter: JSON.parse(localStorage.getItem("paginationCharacter")),
+						/* paginationCharacter: JSON.parse(localStorage.getItem("paginationCharacter")), */
 					} );		
 					return
 				}
@@ -216,6 +224,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				getActions().getContacts()
 			},
+			addUser: async (dataToSend) => {
+				const uri =`${process.env.BACKEND_URL}/api/users`
+				const options = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToSend)
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('error:', response.status, response.statusText)
+					return  
+				}
+			},
 			exampleFunction: () => {getActions().changeColor(0, "green");},
 			getMessage: async () => {
 				const response = await fetch(process.env.BACKEND_URL + "/api/hello")
@@ -250,7 +273,80 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return elm;
 				});
 				setStore({ demo: demo });
-			}
+			},
+			login: async (dataToSend) =>{
+				const uri = `${process.env.BACKEND_URL}/api/login`
+				const options = {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				console.log(options);
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('error:', response.status, response.statusText)
+					if(response.status == 401){
+						setStore({alert: {text: 'Email o contraseña no válido', background: 'warning', visible: true}})					
+					}
+					return
+				}
+				const data = await response.json()
+				console.log(data);
+				localStorage.setItem('token', data.access_token)
+				setStore({
+					isLogged: true,
+					user: data.results
+				})		
+			},
+			getUser: async (userId) => {
+				const uri = `${process.env.BACKEND_URL}/api/users/${userId}`;
+				const options = {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('token')}`
+					}
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				console.log(data);
+				
+			},
+			accessProtected: async () => {
+				const uri = `${process.env.BACKEND_URL}/api/protected`;
+				const options = {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('token')}`
+					}
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					// tratamos el erros
+					console.log('Error:', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({alert: {text: data.message, background: 'success', visible: true}})
+			},
+/* 			addUser: async () =>{
+				const uri = `${getStore().baseUrlApi}`
+				const options = {
+					method: "POST"
+				}
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('error:', response.status, response.statusText)
+					return  
+				}
+			}, */
+
+
 		}
 	};
 };

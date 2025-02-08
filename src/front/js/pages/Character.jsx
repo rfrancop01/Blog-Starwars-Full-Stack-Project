@@ -11,6 +11,7 @@ export const Character = () => {
         actions.getCharacter(params.uid)
     }, [])
 
+
     return (
 
         <div className="container bg-dark">

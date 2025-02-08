@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
@@ -12,12 +12,15 @@ export const Characters = () => {
         console.log(event.target.src);
         event.target.src = "https://starwars-visualguide.com/assets/img/placeholder.jpg"
     }
-    const handlePage = (link) => {
+/*     const handlePage = (link) => {
         console.log(link);
         // ejecutar un action que tenga un fetch con el get del link y lo ponga todo en character
-    }
+    } */
 
-
+        useEffect(() => {
+            actions.setAlert({alert: {visible: false}})
+        } , []) 
+ 
     return (
 
         <div className="container bg-dark mb-3">

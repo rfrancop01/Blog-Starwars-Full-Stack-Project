@@ -1,15 +1,26 @@
 import React, { useContext } from "react";
 import starWarsUrl from "../../img/starwars-logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 export const Navbar = () => {
 
     const { store, actions } = useContext(Context)
+    const navigate = useNavigate()
 
     const handleRemoveFavorite = (name) => {
         actions.removeFavorite(name);
     };
+
+    const handleLogin = () => {
+        if (store.isLogged) {
+            actions.setIsLogged(false);
+            actions.setUser({});
+            navigate('/')
+        }else{
+            navigate('/login')
+        }
+    }
 
     return (
 
@@ -19,7 +30,7 @@ export const Navbar = () => {
                     <Link className="navbar-brand " to="/"><img height="40" src={starWarsUrl} /></Link>
                 </div>
                 <div>
-                    <ul className="nav me-auto mb-2 mb-lg-0">
+                    <ul className="nav me-auto mb-2 mb-lg-0 me-3">
                         <li className="nav-item">
                             <Link className="nav-link link-secondary" to="/characters">Characters</Link>
                         </li>
@@ -32,7 +43,8 @@ export const Navbar = () => {
                         <li className="nav-item">
                             <Link className="nav-link link-secondary" to="/contacts">Contacts</Link>
                         </li>
-                        <li className="nav-item">
+
+                        <li className="nav-item me-4">
                             <div className="dropdown">
                                 <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Favorites
@@ -61,7 +73,12 @@ export const Navbar = () => {
                                 </ul>
                             </div>
                         </li>
-
+                        <li className="nav-item">
+                            <button onClick={handleLogin} className="btn btn-warning me-2" >
+                                {store.isLogged ? 'Log out' : 'Login'}
+                                </button>
+                        </li>
+                        
                     </ul>
                 </div>
             </div>

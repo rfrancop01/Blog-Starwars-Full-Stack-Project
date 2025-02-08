@@ -33,7 +33,7 @@ def login():
     row = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active == True)).scalar()
     if not row:
         response_body['message'] = 'User not found'
-        return response_body, 404
+        return response_body, 401
     user = row.serialize()
     claims = {'user_id': user['id'],
               'is_active': user['is_active']}
@@ -55,10 +55,11 @@ def protected():
     additional_claims = get_jwt()
     print(current_user)
     print(additional_claims)
+    response_body['message'] = 'El token es válido'
     return response_body, 200
 
 
-@api.route('/users', methods=['GET'])
+@api.route('/users', methods=['GET', 'POST'])
 def users():
     response_body = {}
     if request.method == 'GET':
@@ -66,6 +67,20 @@ def users():
         result = [ row.serialize() for row in rows ]
         response_body['message'] = 'Listado de usuarios:'
         response_body['results'] = result
+        return response_body, 200
+    if request.method == 'POST':
+        data = request.json
+        print(data)
+        row = Users(first_name=data.get('first_name'),
+                    last_name=data['last_name'],
+                    phone=data['phone'],
+                    email=data['email'],
+                    is_active=True,
+                    password=data['password'])
+        db.session.add(row)
+        db.session.commit()
+        response_body['message'] = f'El user ha sido creado correctamente'
+        response_body['results'] = row.serialize()
         return response_body, 200
     
 

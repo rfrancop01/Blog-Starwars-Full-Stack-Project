@@ -18,6 +18,10 @@ export const Contacts = () => {
         navigate("/edit-contact")
     }
 
+    useEffect(() => {
+        actions.setAlert({alert: {visible: false}})
+        } , []) 
+
     return (
 
         <div className="container-fluid bg-dark ">

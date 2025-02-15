@@ -334,18 +334,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const data = await response.json()
 				setStore({alert: {text: data.message, background: 'success', visible: true}})
 			},
-/* 			addUser: async () =>{
-				const uri = `${getStore().baseUrlApi}`
-				const options = {
-					method: "POST"
-				}
-				const response = await fetch(uri, options);
-				if (!response.ok) {
-					console.log('error:', response.status, response.statusText)
-					return  
-				}
-			}, */
-
 
 		}
 	};

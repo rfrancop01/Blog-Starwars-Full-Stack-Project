@@ -1,81 +1,119 @@
-# WebApp boilerplate with React JS and Flask API
+# Blog de Star Wars - Proyecto Full Stack
 
-Build web applications using React.js for the front end and python/flask for your backend API.
+Este proyecto es un blog dedicado a la mítica saga "Star Wars". Permite a los usuarios visualizar personajes, naves y planetas, añadirlos a una lista de favoritos, así como registrarse e iniciar sesión en la plataforma.
 
-- Documentation can be found here: https://start.4geeksacademy.com/starters/react-flask
-- Here is a video on [how to use this template](https://www.loom.com/share/f37c6838b3f1496c95111e515e83dd9b)
-- Integrated with Pipenv for package managing.
-- Fast deployment to heroku [in just a few steps here](https://start.4geeksacademy.com/backend/deploy-heroku-posgres).
-- Use of .env file.
-- SQLAlchemy integration for database abstraction.
+## Características
 
-### 1) Installation:
+- **Visualización de Contenidos**: Explora información detallada sobre personajes, naves y planetas del universo Star Wars.
+- **Gestión de Favoritos**: Añade elementos a tu lista de favoritos para acceder a ellos fácilmente.
+- **Autenticación de Usuarios**: Regístrate e inicia sesión para personalizar tu experiencia en el blog.
 
-> If you use Github Codespaces (recommended) or Gitpod this template will already come with Python, Node and the Posgres Database installed. If you are working locally make sure to install Python 3.10, Node 
+## Tecnologías Utilizadas
 
-It is recomended to install the backend first, make sure you have Python 3.8, Pipenv and a database engine (Posgress recomended)
+- **Frontend**: React.js
+- **Backend**: Python con Flask
+- **Base de Datos**: SQLAlchemy
+- **Estilización**: Bootstrap
+- **Autenticación**: Flask-JWT-Extended
 
-1. Install the python packages: `$ pipenv install`
-2. Create a .env file based on the .env.example: `$ cp .env.example .env`
-3. Install your database engine and create your database, depending on your database you have to create a DATABASE_URL variable with one of the possible values, make sure you replace the valudes with your database information:
+## Instalación
 
-| Engine    | DATABASE_URL                                        |
-| --------- | --------------------------------------------------- |
-| SQLite    | sqlite:////test.db                                  |
-| MySQL     | mysql://username:password@localhost:port/example    |
-| Postgress | postgres://username:password@localhost:5432/example |
+1. **Clona este repositorio** en tu máquina local:
 
-4. Migrate the migrations: `$ pipenv run migrate` (skip if you have not made changes to the models on the `./src/api/models.py`)
-5. Run the migrations: `$ pipenv run upgrade`
-6. Run the application: `$ pipenv run start`
+   ```bash
+   git clone https://github.com/rfrancop01/Blog-Starwars-Full-Stack-Project.git
+   ```
 
-> Note: Codespaces users can connect to psql by typing: `psql -h localhost -U gitpod example`
+2. **Navega al directorio del proyecto**:
 
-### Undo a migration
+   ```bash
+   cd Blog-Starwars-Full-Stack-Project
+   ```
 
-You are also able to undo a migration by running
+3. **Configura el entorno virtual** (opcional pero recomendado):
 
-```sh
-$ pipenv run downgrade
-```
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # En Windows: venv\Scripts\activate
+   ```
 
-### Backend Populate Table Users
+4. **Instala las dependencias del backend**:
 
-To insert test users in the database execute the following command:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-```sh
-$ flask insert-test-users 5
-```
+5. **Configura las variables de entorno**. Crea un archivo `.env` en la raíz del proyecto y añade las siguientes variables:
 
-And you will see the following message:
+   ```env
+   FLASK_APP=src/app.py
+   FLASK_ENV=development
+   SECRET_KEY=tu_clave_secreta
+   ```
 
-```
-  Creating test users
-  test_user1@test.com created.
-  test_user2@test.com created.
-  test_user3@test.com created.
-  test_user4@test.com created.
-  test_user5@test.com created.
-  Users created successfully!
-```
+6. **Inicializa la base de datos**:
 
-### **Important note for the database and the data inside it**
+   ```bash
+   flask db upgrade
+   ```
 
-Every Github codespace environment will have **its own database**, so if you're working with more people eveyone will have a different database and different records inside it. This data **will be lost**, so don't spend too much time manually creating records for testing, instead, you can automate adding records to your database by editing ```commands.py``` file inside ```/src/api``` folder. Edit line 32 function ```insert_test_data``` to insert the data according to your model (use the function ```insert_test_users``` above as an example). Then, all you need to do is run ```pipenv run insert-test-data```.
+7. **Inicia el servidor backend**:
 
-### Front-End Manual Installation:
+   ```bash
+   flask run
+   ```
 
--   Make sure you are using node version 14+ and that you have already successfully installed and runned the backend.
+8. **Instala las dependencias del frontend**:
 
-1. Install the packages: `$ npm install`
-2. Start coding! start the webpack dev server `$ npm run start`
+   ```bash
+   npm install
+   ```
 
-## Publish your website!
+9. **Inicia el servidor frontend**:
 
-This boilerplate it's 100% read to deploy with Render.com and Heroku in a matter of minutes. Please read the [official documentation about it](https://start.4geeksacademy.com/deploy).
+   ```bash
+   npm start
+   ```
 
-### Contributors
+## Uso
 
-This template was built as part of the 4Geeks Academy [Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and many other contributors. Find out more about our [Full Stack Developer Course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer), and [Data Science Bootcamp](https://4geeksacademy.com/us/coding-bootcamps/datascience-machine-learning).
+- **Explora el Blog**: Navega por las diferentes secciones para descubrir información sobre personajes, naves y planetas.
+- **Añade Favoritos**: Haz clic en el botón de favorito para guardar tus elementos preferidos.
+- **Regístrate/Inicia Sesión**: Accede a funcionalidades adicionales registrándote e iniciando sesión en la plataforma.
 
-You can find other templates and resources like this at the [school github page](https://github.com/4geeksacademy/).
+## Contribuciones
+
+¡Las contribuciones son bienvenidas! Si deseas mejorar este proyecto:
+
+1. **Haz un fork** del repositorio.
+2. **Crea una nueva rama** para tu característica o mejora:
+
+   ```bash
+   git checkout -b nombre-de-tu-rama
+   ```
+
+3. **Realiza tus cambios** y confirma los commits:
+
+   ```bash
+   git commit -m "Descripción de los cambios"
+   ```
+
+4. **Empuja tus cambios** a tu fork:
+
+   ```bash
+   git push origin nombre-de-tu-rama
+   ```
+
+5. **Abre un Pull Request** en este repositorio describiendo tus modificaciones.
+
+
+
+## Créditos
+
+Desarrollado por Ricardo Franco Pérez.
+
+Inspirado en el universo de [Star Wars](https://www.starwars.com/).
+
+---
+
+*Este proyecto fue desarrollado como parte del curso de Full Stack Developer en [4Geeks Academy](https://4geeksacademy.com).*
